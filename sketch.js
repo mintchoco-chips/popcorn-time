@@ -20,7 +20,8 @@ function setup() {
 
 function draw() {
   background(255, 240, 200);
-
+  scale(1.5); // zoom in 150%
+  translate(-50, -100); // shift so bucket stays visible
   // Gravity & movement
   velocity += gravity;
   velocity *= 0.9; // damping

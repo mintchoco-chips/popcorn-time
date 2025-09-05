@@ -7,6 +7,7 @@ let velocity = 0;
 let score = 0;
 let bucketY;
 let bucketSize, grapeSize, popcornSize;
+let gameOver = false; // Track game state
 
 function preload() {
   bucketImg = loadImage(
@@ -36,59 +37,67 @@ function setup() {
 function draw() {
   background(255, 240, 200);
 
-  // Gravity & movement
-  velocity += gravity;
-  velocity *= 0.9;
-  bucketY += velocity;
-  bucketY = constrain(bucketY, 0, height - bucketSize);
+  if (!gameOver) {
+    // Gravity & movement
+    velocity += gravity;
+    velocity *= 0.9;
+    bucketY += velocity;
+    bucketY = constrain(bucketY, 0, height - bucketSize);
 
-  let bucketCenterX = 50 + bucketSize / 2;
-  let bucketCenterY = bucketY + bucketSize / 2;
+    let bucketCenterX = 50 + bucketSize / 2;
+    let bucketCenterY = bucketY + bucketSize / 2;
 
-  // Draw bucket
-  image(bucketImg, 50, bucketY, bucketSize, bucketSize);
+    // Draw bucket
+    image(bucketImg, 50, bucketY, bucketSize, bucketSize);
 
-  // Spawn grapes
-  if (frameCount % 90 === 0) {
-    grapes.push({ x: width, y: random(100, height - 100), size: grapeSize });
-  }
-
-  // Spawn popcorns
-  if (frameCount % 150 === 0) {
-    popcorns.push({ x: width, y: random(50, height - 50), size: popcornSize });
-  }
-
-  // Move and draw grapes
-  for (let i = grapes.length - 1; i >= 0; i--) {
-    let g = grapes[i];
-    g.x -= width * 0.008; // speed proportional to width
-    image(grapeImg, g.x, g.y, g.size, g.size);
-
-    if (dist(bucketCenterX, bucketCenterY, g.x, g.y) < bucketSize * 0.6) {
-      noLoop();
-      textSize(width * 0.08);
-      fill(0);
-      text("Game Over! Score: " + score, width / 2, height / 2);
+    // Spawn grapes
+    if (frameCount % 90 === 0) {
+      grapes.push({ x: width, y: random(100, height - 100), size: grapeSize });
     }
 
-    if (g.x < -g.size) grapes.splice(i, 1);
-  }
-
-  // Move and draw popcorns
-  for (let i = popcorns.length - 1; i >= 0; i--) {
-    let p = popcorns[i];
-    p.x -= width * 0.006;
-    image(kernelImg, p.x, p.y, p.size, p.size);
-
-    if (dist(bucketCenterX, bucketCenterY, p.x, p.y) < bucketSize * 0.55) {
-      score++;
-      popcorns.splice(i, 1);
+    // Spawn popcorns
+    if (frameCount % 150 === 0) {
+      popcorns.push({ x: width, y: random(50, height - 50), size: popcornSize });
     }
 
-    if (p.x < -p.size) popcorns.splice(i, 1);
+    // Move and draw grapes
+    for (let i = grapes.length - 1; i >= 0; i--) {
+      let g = grapes[i];
+      g.x -= width * 0.008; 
+      image(grapeImg, g.x, g.y, g.size, g.size);
+
+      if (dist(bucketCenterX, bucketCenterY, g.x, g.y) < bucketSize * 0.6) {
+        gameOver = true;
+        noLoop();
+        break;
+      }
+
+      if (g.x < -g.size) grapes.splice(i, 1);
+    }
+
+    // Move and draw popcorns
+    for (let i = popcorns.length - 1; i >= 0; i--) {
+      let p = popcorns[i];
+      p.x -= width * 0.006;
+      image(kernelImg, p.x, p.y, p.size, p.size);
+
+      if (dist(bucketCenterX, bucketCenterY, p.x, p.y) < bucketSize * 0.55) {
+        score++;
+        popcorns.splice(i, 1);
+      }
+
+      if (p.x < -p.size) popcorns.splice(i, 1);
+    }
+  } else {
+    // Game over screen
+    textSize(width * 0.08);
+    fill(0);
+    text("Game Over! Score: " + score, width / 2, height / 2);
+    textSize(24);
+    text("Press 'R' to Restart", width / 2, height / 2 + 80);
   }
 
-  // Score
+  // Draw score
   fill(0);
   textSize(width * 0.05);
   text("Score: " + score, width - 100, 40);
@@ -96,12 +105,12 @@ function draw() {
 
 // Jump on click or tap
 function mousePressed() {
-  velocity += lift;
+  if (!gameOver) velocity += lift;
 }
 
 function touchStarted() {
-  velocity += lift;
-  return false; // prevent scrolling on mobile
+  if (!gameOver) velocity += lift;
+  return false;
 }
 
 // Handle window resizing
@@ -109,7 +118,6 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   calculateSizes();
 
-  // Update existing objects
   for (let g of grapes) g.size = grapeSize;
   for (let p of popcorns) p.size = popcornSize;
   bucketY = constrain(bucketY, 0, height - bucketSize);
@@ -120,4 +128,17 @@ function calculateSizes() {
   bucketSize = width * 0.15;
   grapeSize = width * 0.1;
   popcornSize = width * 0.08;
+}
+
+// Restart the game when 'R' is pressed
+function keyPressed() {
+  if (key === 'r' || key === 'R') {
+    score = 0;
+    grapes = [];
+    popcorns = [];
+    velocity = 0;
+    bucketY = height / 2;
+    gameOver = false;
+    loop();
+  }
 }

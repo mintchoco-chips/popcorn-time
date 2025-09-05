@@ -8,9 +8,21 @@ let score = 0;
 let bucketY = 300;
 
 function preload() {
-  bucketImg = loadImage("assets/bucket2.png");
-  grapeImg = loadImage("assets/grape2.png");
-  kernelImg = loadImage("assets/kernel2.png");
+  bucketImg = loadImage(
+    "assets/bucket2.png",
+    () => console.log("✅ bucket2.png loaded!"),
+    () => console.error("❌ bucket2.png NOT FOUND — check path/case")
+  );
+  grapeImg = loadImage(
+    "assets/grape2.png",
+    () => console.log("✅ grape2.png loaded!"),
+    () => console.error("❌ grape2.png NOT FOUND — check path/case")
+  );
+  kernelImg = loadImage(
+    "assets/kernel2.png",
+    () => console.log("✅ kernel2.png loaded!"),
+    () => console.error("❌ kernel2.png NOT FOUND — check path/case")
+  );
 }
 
 function setup() {
@@ -74,6 +86,10 @@ function draw() {
   fill(0);
   textSize(20);
   text("Score: " + score, width - 80, 30);
+}
+
+function mousePressed() {
+  velocity += lift;
 }
 
 function mousePressed() {

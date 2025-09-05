@@ -1,4 +1,4 @@
-let bucket, grapeImg, kernelImg;
+let bucketImg, grapeImg, kernelImg;
 let grapes = [];
 let popcorns = [];
 let gravity = 0.6;
@@ -8,9 +8,9 @@ let score = 0;
 let bucketY = 300;
 
 function preload() {
-  bucket = loadImage("bucket2.png");
-  grapeImg = loadImage("grape2.png");
-  kernelImg = loadImage("kernel2.png");
+  bucketImg = loadImage("assets/bucket2.png");
+  grapeImg = loadImage("assets/grape2.png");
+  kernelImg = loadImage("assets/kernel2.png");
 }
 
 function setup() {
@@ -28,7 +28,7 @@ function draw() {
   bucketY = constrain(bucketY, 0, height - 50);
 
   // Draw player
-  image(bucket, 50, bucketY, 60, 60);
+  image(bucketImg, 50, bucketY, 60, 60);
 
   // Spawn grapes
   if (frameCount % 90 === 0) {

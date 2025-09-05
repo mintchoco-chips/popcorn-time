@@ -8,9 +8,9 @@ let score = 0;
 let bucketY = 300;
 
 function preload() {
-  bucket = loadImage("assets/bucket2.png");
-  grapeImg = loadImage("assets/grape2.png");
-  kernelImg = loadImage("assets/kernel2.png");
+  bucket = loadImage("bucket2.png");
+  grapeImg = loadImage("grape2.png");
+  kernelImg = loadImage("kernel2.png");
 }
 
 function setup() {

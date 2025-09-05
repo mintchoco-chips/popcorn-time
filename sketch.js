@@ -9,7 +9,7 @@ let bucketY = 300;
 
 function preload() {
   bucket = loadImage("assets/bucket2.png");
-  grapeImg = loadImage("assets/grape.png");
+  grapeImg = loadImage("assets/grape2.png");
   kernelImg = loadImage("assets/kernel2.png");
 }
 

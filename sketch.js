@@ -9,18 +9,30 @@ let bucketY;
 let bucketSize, grapeSize, popcornSize;
 
 function preload() {
-  bucketImg = loadImage("assets/bucket2.png");
-  grapeImg = loadImage("assets/grape2.png");
-  kernelImg = loadImage("assets/kernel2.png");
+  bucketImg = loadImage(
+    "assets/bucket2.png",
+    () => console.log("Bucket loaded"),
+    () => console.error("Failed to load bucket")
+  );
+  grapeImg = loadImage(
+    "assets/grape2.png",
+    () => console.log("Grape loaded"),
+    () => console.error("Failed to load grape")
+  );
+  kernelImg = loadImage(
+    "assets/kernel2.png",
+    () => console.log("Kernel loaded"),
+    () => console.error("Failed to load kernel")
+  );
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
 
-  bucketSize = width * 0.15;    // bucket is 15% of screen width
-  grapeSize = width * 0.1;      // grape is 10% of screen width
-  popcornSize = width * 0.08;   // popcorn is 8% of screen width
+  bucketSize = width * 0.15;    
+  grapeSize = width * 0.1;      
+  popcornSize = width * 0.08;   
 
   bucketY = height / 2;
 }
@@ -50,7 +62,7 @@ function draw() {
   // Move and draw grapes
   for (let i = grapes.length - 1; i >= 0; i--) {
     let g = grapes[i];
-    g.x -= width * 0.01; // speed scales with screen size
+    g.x -= width * 0.01; 
     image(grapeImg, g.x, g.y, g.size, g.size);
 
     if (dist(50, bucketY, g.x, g.y) < bucketSize * 0.6) {
@@ -93,4 +105,3 @@ function windowResized() {
   grapeSize = width * 0.1;
   popcornSize = width * 0.08;
 }
-

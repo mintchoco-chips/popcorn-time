@@ -91,3 +91,10 @@ function draw() {
 function mousePressed() {
   velocity += lift;
 }
+
+function calculateSizes() {
+  let base = min(width, height); // use smaller dimension for scaling
+  bucketSize = base * 0.15;      // bucket ~15% of smaller dimension
+  grapeSize  = base * 0.1;       // grapes ~10%
+  popcornSize = base * 0.08;     // popcorn ~8%
+}

@@ -29,11 +29,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
-
-  bucketSize = width * 0.15;    
-  grapeSize = width * 0.1;      
-  popcornSize = width * 0.08;   
-
+  calculateSizes();
   bucketY = height / 2;
 }
 
@@ -46,7 +42,7 @@ function draw() {
   bucketY += velocity;
   bucketY = constrain(bucketY, 0, height - bucketSize);
 
-  // Draw player
+  // Draw bucket
   image(bucketImg, 50, bucketY, bucketSize, bucketSize);
 
   // Spawn grapes
@@ -59,7 +55,7 @@ function draw() {
     popcorns.push({ x: width, y: random(50, height - 50), size: popcornSize });
   }
 
-  // Move and draw grapes
+  // Update grapes
   for (let i = grapes.length - 1; i >= 0; i--) {
     let g = grapes[i];
     g.x -= width * 0.01; 
@@ -75,7 +71,7 @@ function draw() {
     if (g.x < -g.size) grapes.splice(i, 1);
   }
 
-  // Move and draw popcorns
+  // Update popcorns
   for (let i = popcorns.length - 1; i >= 0; i--) {
     let p = popcorns[i];
     p.x -= width * 0.008;
@@ -89,19 +85,30 @@ function draw() {
     if (p.x < -p.size) popcorns.splice(i, 1);
   }
 
-  // Score
+  // Draw score
   fill(0);
   textSize(width * 0.05);
   text("Score: " + score, width - 100, 40);
 }
 
+// Make bucket jump
 function mousePressed() {
   velocity += lift;
 }
 
+// Handle resizing
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  calculateSizes();
+
+  // Update existing objects
+  for (let g of grapes) g.size = grapeSize;
+  for (let p of popcorns) p.size = popcornSize;
+  bucketY = constrain(bucketY, 0, height - bucketSize);
+}
+
+// Calculate sizes based on screen
+function calculateSizes() {
   bucketSize = width * 0.15;
   grapeSize = width * 0.1;
   popcornSize = width * 0.08;
-}

@@ -1,15 +1,16 @@
-let bucket;
+let bucket, grapeImg, kernelImg;
 let grapes = [];
 let popcorns = [];
 let gravity = 0.6;
 let lift = -10;
 let velocity = 0;
 let score = 0;
-let bucketY = 300; // Move this up to avoid hoisting issues
+let bucketY = 300;
 
 function preload() {
-  bucket = loadImage("assets/bucket2.png"); 
-  // Add your grape + popcorn PNGs later
+  bucket = loadImage("assets/bucket2.png");
+  grapeImg = loadImage("assets/grape.png");
+  kernelImg = loadImage("assets/kernel2.png");
 }
 
 function setup() {
@@ -43,12 +44,10 @@ function draw() {
   for (let i = grapes.length - 1; i >= 0; i--) {
     let g = grapes[i];
     g.x -= 3;
-    fill(180, 0, 180); // placeholder grape
-    ellipse(grape.png);
+    image(grapeImg, g.x, g.y, g.size, g.size);
 
-    // Collision check
     if (dist(50, bucketY, g.x, g.y) < 40) {
-      noLoop(); // game over
+      noLoop();
       textSize(32);
       fill(0);
       text("Game Over! Score: " + score, width/2, height/2);
@@ -61,10 +60,8 @@ function draw() {
   for (let i = popcorns.length - 1; i >= 0; i--) {
     let p = popcorns[i];
     p.x -= 2;
-    fill(255, 220, 120); // placeholder popcorn
-    ellipse(kernel2.png);
+    image(kernelImg, p.x, p.y, p.size, p.size);
 
-    // Collection check
     if (dist(50, bucketY, p.x, p.y) < 35) {
       score++;
       popcorns.splice(i, 1);
@@ -80,5 +77,5 @@ function draw() {
 }
 
 function mousePressed() {
-  velocity += lift; // makes the bucket jump
+  velocity += lift;
 }

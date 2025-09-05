@@ -8,7 +8,7 @@ let score = 0;
 let bucketY = 300; // Move this up to avoid hoisting issues
 
 function preload() {
-  bucket = loadImage("assets/bucket.png"); 
+  bucket = loadImage("assets/bucket2.png"); 
   // Add your grape + popcorn PNGs later
 }
 
@@ -44,7 +44,7 @@ function draw() {
     let g = grapes[i];
     g.x -= 3;
     fill(180, 0, 180); // placeholder grape
-    ellipse(g.x, g.y, g.size);
+    ellipse(grape.png);
 
     // Collision check
     if (dist(50, bucketY, g.x, g.y) < 40) {
@@ -62,7 +62,7 @@ function draw() {
     let p = popcorns[i];
     p.x -= 2;
     fill(255, 220, 120); // placeholder popcorn
-    ellipse(p.x, p.y, p.size);
+    ellipse(kernel2.png);
 
     // Collection check
     if (dist(50, bucketY, p.x, p.y) < 35) {
